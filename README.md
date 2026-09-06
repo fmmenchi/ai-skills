@@ -74,8 +74,21 @@ rule of thumb for that is having explained the same thing to an agent three time
 
 Idempotent. Skills are linked one by one, so the vendor packs already installed in each tool's
 `skills/` directory are left alone. Anything in the way that is not a symlink is reported and
-never overwritten. Tools with no `~/.<tool>` directory are named in the summary rather than
-skipped in silence.
+never overwritten.
+
+Three destinations cover the field, each verified against the vendor's own documentation:
+
+| destination | read by |
+| --- | --- |
+| `~/.claude/skills` | Claude Code; opencode and Cursor read it too |
+| `~/.codex/skills` | Codex CLI; Cursor reads it for compatibility |
+| `~/.agents/skills` | the neutral hub of the standard: Cursor, Gemini CLI and opencode |
+
+`~/.agents/skills` is maintained whether or not any of those three are installed — it belongs to
+the standard rather than to a tool. Guessing `~/.<tool>/skills` for each tool was the earlier
+design and it was wrong: opencode does not read `~/.opencode/skills` at all, it reads
+`~/.config/opencode/skills`. The operating contract still follows each tool's own directory,
+and the ones with no `~/.<tool>` yet are named in the summary rather than skipped in silence.
 
 ## Check
 
