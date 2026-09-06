@@ -76,9 +76,18 @@ for dir in "${dirs[@]}"; do
     while IFS= read -r h; do warn "$name: names a vendor tool — $h"; done <<< "$hits"
   fi
 
-  # A reference nobody can open is worse than no reference at all.
+  # A reference nobody can open is worse than no reference at all. A skill is
+  # symlinked into each tool's own directory, so only paths that resolve inside
+  # the skill survive the trip: one that resolves at the repository root works
+  # while the repository is the working directory and breaks everywhere else.
   while IFS= read -r ref; do
-    [ -e "${dir%/}/$ref" ] || err "$name: references '$ref', which does not exist"
+    if [ -e "${dir%/}/$ref" ]; then
+      continue
+    elif [ -e "$ROOT/$ref" ]; then
+      warn "$name: '$ref' resolves at the repository root, not inside the skill — it will not resolve once symlinked"
+    else
+      err "$name: references '$ref', which does not exist"
+    fi
   done < <(grep -oE '(references|scripts|assets)/[A-Za-z0-9._/-]+' "$file" | sort -u)
 done
 shopt -u nullglob
