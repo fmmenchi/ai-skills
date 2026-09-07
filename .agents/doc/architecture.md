@@ -16,6 +16,7 @@ them would install this repository's build commands into every project. Human ra
 | `.agents/doc/*.md` | no | on demand, when a task touches the topic | this file and its siblings |
 | `scripts/check-skills.sh` | no | the `pre-push` hook, and `pnpm run check` | the gate |
 | `tools/commit/` | no | commitlint and the branch-name gate | one vocabulary, two enforcement points |
+| `.github/workflows/ci.yml` | no | GitHub Actions | re-runs the three gates; the only one a laptop cannot skip |
 | `install.sh` | no | run by hand | idempotent; never overwrites a non-symlink |
 
 Skills are linked **one by one**, never by linking `skills/` itself: the destination directories

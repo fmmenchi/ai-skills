@@ -1,0 +1,58 @@
+# The hooks are advisory: they live behind `core.hooksPath`, which `pnpm install`
+# sets per working tree, so a clone that has not installed runs no hook and says
+# nothing about it. `--no-verify` bypasses them outright. This workflow is the
+# only enforcement that cannot be skipped from a laptop, which is why it re-runs
+# the same three gates instead of trusting that they ran locally.
+#
+# It only *reports*, though. A failing check does not stop a merge until the job
+# is marked required in the repository's branch-protection rules.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # husky's prepare script would otherwise install hooks into a throwaway runner.
+  HUSKY: 0
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # commitlint walks base..head; the default shallow fetch does not
+          # contain those commits.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Skills conform
+        run: ./scripts/check-skills.sh
+
+      - name: Branch name is semantic
+        if: github.event_name == 'pull_request'
+        # Passed through the environment, never interpolated into the shell: a
+        # branch name is attacker-controlled text.
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: node tools/commit/check-branch-name.mjs "$BRANCH"
+
+      - name: Commit messages are conventional
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: pnpm exec commitlint --from "$BASE" --to "$HEAD" --verbose

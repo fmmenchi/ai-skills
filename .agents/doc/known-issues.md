@@ -31,11 +31,38 @@ until `./install.sh` runs — editing it changes nothing anywhere until then.
 Corollary: moving that file cannot break a symlink that was never created. It *will* break one
 once the installer has run, so re-run `./install.sh` after any move.
 
-## The git hooks do not exist until `pnpm install` runs
+## The hooks fail open, silently, and look installed while doing nothing
 
-husky installs them from the `prepare` script. On a fresh clone — or a fresh worktree — commits
-and pushes are unguarded until the first `pnpm install`. A green commit therefore proves nothing
-about hook coverage unless the install has happened.
+`core.hooksPath` is written to the **shared** `.git/config` — verified with `git config
+--show-origin core.hooksPath`, which reports `.git/config` and the value `.husky/_`. But
+`.husky/_` is created by `pnpm install` **per working tree**.
+
+So a checkout that has the branch but not the install has `.husky/commit-msg` and
+`.husky/pre-push` sitting in plain view, a config pointing at them, and **no hook running at
+all**: git finds no directory and skips without a word. Observed 2026-09-07 on the main checkout,
+which had every file and neither `node_modules` nor `.husky/_`.
+
+Run `pnpm install` once per working tree — including every new worktree — and treat a green
+commit as evidence of nothing until you have. CI re-runs the same gates precisely because this
+one cannot be trusted.
+
+## `pre-push` checks the branch you are on, not the ref you push
+
+It reads `git rev-parse --abbrev-ref HEAD` and ignores the refs git hands it on stdin, so
+`git push origin HEAD:refs/heads/anything` satisfies the gate and creates a non-semantic remote
+branch. Inherited from `shared-platform`, where the same hole is open.
+
+The branch pattern is also only a charset: `feat/---` and `feat/a` both pass.
+
+Neither is fixed. CI validates `github.head_ref` on a pull request, which closes the path that
+matters for merging, and leaves direct pushes to other refs unguarded.
+
+## Nothing local can enforce `--no-verify`
+
+A hook cannot prevent its own bypass, and the contract's prohibition is prose. The workflow in
+`.github/workflows/ci.yml` is the only enforcement that survives a laptop — and even that only
+*reports* until the job is marked required in branch protection, which is repository
+configuration and lives outside this repository.
 
 ## A harness-created worktree gets a branch name the gate rejects
 
