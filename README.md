@@ -50,6 +50,12 @@ word budgets for the body; index files; repository shape. Anthropic's own author
 prescribes the third person, and Anthropic's own shipped skills use the imperative — which is
 the measure of how much that rule binds.
 
+Sharper than that: the two Anthropic sources disagree with **each other**. The authoring guide's
+own good example reads *"…Use when working with PDF files…"*, and the official
+`skill-development` skill marks that exact shape as *"Not third person"*, wanting *"This skill
+should be used when…"* instead. A rule whose two authorities contradict one another on the same
+field is not a standard.
+
 Measured, rather than argued: across the 108 distinct descriptions installed on this machine,
 31 are third-person singular, 17 open with *"This skill should be used when…"*, 5 address the
 reader as *you*, and the rest use a bare infinitive. Four forms, shipping side by side, all

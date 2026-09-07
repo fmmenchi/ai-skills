@@ -29,18 +29,29 @@ description: <What it does, one sentence>. Use when <concrete triggers — the
 Gerund reads best (`processing-pdfs`); a noun phrase (`pdf-processing`) is fine. Never `helper`,
 `utils`, `tools`, `documents`, `data` — a name that could cover anything routes to nothing.
 
-**Person is taste. The trigger is not.** The published guidance prescribes third person, and the
-shipped corpus does not follow it: measured across 108 distinct installed descriptions, 31 use
-third-person singular (`Reviews and authors…`), 17 open with `This skill should be used when…`,
-5 address the reader directly, and the rest use a bare infinitive (`Build AI agents…`). All four
-forms fire. Pick one and hold it within the skill; do not spend effort converting between them.
+**Person is two questions, not one — and only one of them has a settled answer.**
 
-The one form worth avoiding is a **second-person standing order** — `you MUST invoke this skill
-before every X`. The description is injected into a prompt that already addresses the model as
-*you*, so it reads as an instruction competing with the harness rather than as a condition for
-being selected. Treat this as a suggestion, not a finding: the evidence is that those same
-descriptions are the ones shouting **MANDATORY** in bold to be heard, which looks like
-compensation — five cases, and no controlled comparison.
+*In the body:* imperative or infinitive, **never second person**. `To do X, do Y`, not `You
+should do X`. Every source agrees, and the official skill-authoring skill puts it in its own
+review checklist. Follow it.
+
+*In the `description`:* every source prescribes third person and **no source recommends second
+person** — but the two that prescribe it disagree on what it means. The authoring guide's own
+good example reads `Extract text and tables from PDF files… Use when working with PDF files…`,
+while the official `skill-development` skill marks that exact shape (`Load when user needs hook
+help.`) as *"Not third person"* and wants `This skill should be used when…` instead.
+
+The corpus follows neither consistently: across 108 distinct installed descriptions, 31 are
+third-person singular, 17 open with `This skill should be used when…`, 5 address the reader, and
+the rest use a bare infinitive. All four route. **So: pick one form, hold it within the skill,
+and do not spend effort converting between them.** The stated mechanism — the description lands
+in a prompt written in third person, and pronouns break the voice — is plausible and nowhere
+demonstrated.
+
+One caveat, offered as a suspicion rather than a finding: a **second-person standing order**
+(`you MUST invoke this skill before every X`) reads as an instruction competing with the harness
+rather than as a condition for being selected. The only evidence is that those descriptions are
+also the ones shouting **MANDATORY** in bold to be heard — five cases, no controlled comparison.
 
 What the same measurement does settle: only 58 of those 108 descriptions state *when* at all.
 The field that decides activation is under-served in half the corpus, while the question of
