@@ -16,6 +16,7 @@ skills/<name>/         a skill in the Agent Skills open format
 install.sh             symlinks the contract and the skills into each tool present
 scripts/check-skills.sh conformance check; run it before committing a skill
 AGENTS.md              this repository's own contract — never installed anywhere
+tools/commit/          the commit-type vocabulary, read by commitlint and the branch gate
 ```
 
 The two `AGENTS.md` are not the same file and must not be merged. `contract/AGENTS.md` is what
