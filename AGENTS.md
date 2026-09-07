@@ -64,11 +64,26 @@ description: <What it does, one sentence, third person>. Use when <concrete trig
 partially, or not at all. A reference file over 100 lines opens with its own table of contents.
 Start with `SKILL.md` alone: splitting early costs a read and saves nothing.
 
+**Structure, and what each part costs.** Only the directory and `SKILL.md` are the standard; the
+three subdirectories are convention, followed everywhere and enforced nowhere.
+
+```
+skills/<name>/
+  SKILL.md      frontmatter, always in context · body, on activation
+  references/   read only when SKILL.md names the file
+  scripts/      executed — only the output enters context, never the source
+  assets/       used in the output, never loaded
+```
+
+Nothing below the frontmatter costs anything until it is reached, so bundle the complete
+reference rather than an abridged one. Name files by their content — `form-validation-rules.md`,
+not `doc2.md` — and when a skill spans several domains, split `references/` by domain so an
+unrelated one never enters context at all. Forward slashes everywhere, including on Windows.
+
 **Match freedom to fragility.** Where several approaches are valid, give direction and let the
 model choose. Where the sequence is fragile and must not vary, give the exact command and say so
-— that is a `scripts/` entry, not numbered prose a model may reinterpret. Scripts are executed
-without entering context, so state which you mean: *run* `x.sh`, or *read* `x.sh` for the
-algorithm.
+— that is a `scripts/` entry, not numbered prose a model may reinterpret. Say which you mean:
+*run* `x.sh`, or *read* `x.sh` for the algorithm.
 
 **One skill = one decision boundary**, not a domain and not a language. Two candidates that
 always fire together are one skill. Two that fire where the other must not are two skills, and
@@ -78,15 +93,28 @@ each states the other's *never when*.
 the sister that still applies for everything else. It is why a skill can be twenty lines instead
 of four hundred, and why the two never drift apart.
 
+**Where the output has a shape, show it — do not describe it.** Which form depends on how much
+the shape may move:
+
+- **Fixed** — something downstream parses it. Give the literal template and say the structure is
+  mandatory.
+- **Adaptable** — give the same template as a sensible default and say to adjust it to the case.
+- **A matter of style** — give two or three input → output pairs. Examples carry tone and level
+  of detail more precisely than any adjective describing them.
+
+**Close the loop wherever a script can judge the result:** produce, validate, fix, repeat, and
+proceed only once validation passes. For batch or destructive work, put the plan in a file,
+validate the file, then execute it — the errors surface before anything has been touched, and a
+failed check names the specific problem instead of the model guessing at it.
+
 **Write the evaluation before the prose.** Three scenarios where the model fails *without* the
 skill; if you cannot name them, the skill is documenting an imagined problem.
 
 Anti-patterns, all of them cheap to avoid: offering several options with no default; temporal
 phrasing (*"the new API"*, *"currently"*) that goes stale in silence; terminology that drifts
-within one file; backslashes in paths; assuming a package is installed; unqualified MCP tool
-names. And the one specific to this repository — **name capabilities, not vendor tools**, which
-the gate warns on, because it is what decides whether the skill survives being read by a
-different tool.
+within one file; assuming a package is installed; unqualified MCP tool names. And the one
+specific to this repository — **name capabilities, not vendor tools**, which the gate warns on,
+because it is what decides whether the skill survives being read by a different tool.
 
 ## Git
 
