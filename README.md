@@ -50,6 +50,11 @@ word budgets for the body; index files; repository shape. Anthropic's own author
 prescribes the third person, and Anthropic's own shipped skills use the imperative — which is
 the measure of how much that rule binds.
 
+Measured, rather than argued: across the 108 distinct descriptions installed on this machine,
+31 are third-person singular, 17 open with *"This skill should be used when…"*, 5 address the
+reader as *you*, and the rest use a bare infinitive. Four forms, shipping side by side, all
+routing. In the same corpus only 58 say **when** at all — which is where the effort belongs.
+
 The one thing every source agrees on, and the only one that changes outcomes: **the
 `description` must say when to use the skill, not only what it does.** It is the sole field
 loaded at startup, so it is the entire routing contract. Everything else is a preference.

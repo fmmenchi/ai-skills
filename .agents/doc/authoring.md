@@ -16,7 +16,7 @@ description never fires, and nothing reports why.
 ```yaml
 ---
 name: same-as-the-directory
-description: <What it does, one sentence, third person>. Use when <concrete triggers — the
+description: <What it does, one sentence>. Use when <concrete triggers — the
   words a request actually contains, not the category>. <Never when X; read Y instead.>
 ---
 ```
@@ -24,14 +24,27 @@ description: <What it does, one sentence, third person>. Use when <concrete trig
 | Field | Hard limit | Rules |
 | --- | --- | --- |
 | `name` | 64 characters | lowercase letters, digits, hyphens; identical to the directory; no XML tags; never the reserved words `claude` or `anthropic` |
-| `description` | 1024 characters | non-empty, third person, no XML tags; says both *what* and *when* |
+| `description` | 1024 characters | non-empty, no XML tags; says both *what* and *when* |
 
 Gerund reads best (`processing-pdfs`); a noun phrase (`pdf-processing`) is fine. Never `helper`,
 `utils`, `tools`, `documents`, `data` — a name that could cover anything routes to nothing.
 
-**Third person is mechanism, not style.** The description is injected into the system prompt; a
-mixed point of view degrades discovery. `Processes Excel files…`, never `I can help you…` or
-`You can use this to…`.
+**Person is taste. The trigger is not.** The published guidance prescribes third person, and the
+shipped corpus does not follow it: measured across 108 distinct installed descriptions, 31 use
+third-person singular (`Reviews and authors…`), 17 open with `This skill should be used when…`,
+5 address the reader directly, and the rest use a bare infinitive (`Build AI agents…`). All four
+forms fire. Pick one and hold it within the skill; do not spend effort converting between them.
+
+The one form worth avoiding is a **second-person standing order** — `you MUST invoke this skill
+before every X`. The description is injected into a prompt that already addresses the model as
+*you*, so it reads as an instruction competing with the harness rather than as a condition for
+being selected. Treat this as a suggestion, not a finding: the evidence is that those same
+descriptions are the ones shouting **MANDATORY** in bold to be heard, which looks like
+compensation — five cases, and no controlled comparison.
+
+What the same measurement does settle: only 58 of those 108 descriptions state *when* at all.
+The field that decides activation is under-served in half the corpus, while the question of
+person is noise. Spend the effort there.
 
 **Concrete triggers beat categories.** `chat rooms, multiplayer games, booking systems` matches
 what a request actually says; *"distributed state"* does not. Include the words the request
