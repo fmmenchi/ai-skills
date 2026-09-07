@@ -3,7 +3,8 @@
 **Two contracts, one repository.** `contract/AGENTS.md` is the product: `install.sh` symlinks it
 as `~/.claude/CLAUDE.md` and `~/.<tool>/AGENTS.md`, so it applies in every repository on the
 machine. The root `AGENTS.md` governs work done *inside* here and is installed nowhere. Merging
-them would install this repository's build commands into every project. Human rationale:
+them would install this repository's build commands into every project.
+[ADR 0001](../../doc/adr/0001-two-contracts-one-repository.md); human rationale
 `../../README.md`.
 
 ## Layout
@@ -13,7 +14,8 @@ them would install this repository's build commands into every project. Human ra
 | `contract/AGENTS.md` | **yes**, by symlink | every tool, in every repository | the product; edit it and every tool sees the change at once |
 | `skills/<name>/` | **yes**, one symlink per skill | the tool that activates it | empty is the correct state; see the admission gates below |
 | `AGENTS.md` | no | agents working in this repository | hub; the spokes in `.agents/doc/` are opened on demand |
-| `.agents/doc/*.md` | no | on demand, when a task touches the topic | this file and its siblings |
+| `.agents/doc/*.md` | no | on demand, when a task touches the topic | this file and its siblings; states decisions, never makes them |
+| `doc/adr/` | no | before any structural decision, and to find why one was taken | the record; an ADR precedes the change it describes |
 | `scripts/check-skills.sh` | no | the `pre-push` hook, and `pnpm run check` | the gate |
 | `tools/commit/` | no | commitlint and the branch-name gate | one vocabulary, two enforcement points |
 | `.github/workflows/ci.yml` | no | GitHub Actions | re-runs the three gates; the only one a laptop cannot skip |
@@ -46,6 +48,7 @@ has. The moment a skill needs `pnpm install`, it has stopped being portable, whi
 property this repository exists to protect.
 
 The same reasoning bounds any future build step: it may serve the repository, never the skills.
+[ADR 0002](../../doc/adr/0002-node-serves-the-repository-never-the-skills.md).
 
 ## What is standard, and what is not
 

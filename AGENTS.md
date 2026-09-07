@@ -53,6 +53,14 @@ cleanly and is never loaded.
 
 ## How we work
 
+- **A structural decision gets an ADR first, and is not made until it is written.** Before
+  changing the shape of the repository, what it ships, what a skill may depend on, or any rule
+  that binds every future skill: write `doc/adr/NNNN-<kebab-title>.md`. The `.agents/doc/*.md`
+  spokes **state** what was decided; they are never where it is decided, and a decision that
+  lives only in a conversation will be re-litigated. The test is whether reversing it later
+  would cost more than the decision itself. An ADR may stay `proposed` indefinitely — a framed
+  open question is worth more than a decision taken early to close it. Conventions in
+  [doc/adr/README.md](./doc/adr/README.md).
 - **Conventional commits, always.** `pnpm run commit` builds the message; the `commit-msg` hook
   runs commitlint and refuses anything else. The type vocabulary lives in
   `tools/commit/types.mjs` — one list, read by both the hook and the branch gate, so the two

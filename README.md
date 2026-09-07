@@ -17,6 +17,7 @@ install.sh             symlinks the contract and the skills into each tool prese
 scripts/check-skills.sh conformance check; run it before committing a skill
 AGENTS.md              this repository's own contract — never installed anywhere
 .agents/doc/*.md       topic rules, opened on demand: architecture, authoring, interop, known issues
+doc/adr/               the decisions, and why; an ADR precedes the change it describes
 tools/commit/          the commit-type vocabulary, read by commitlint and the branch gate
 ```
 

@@ -30,6 +30,7 @@ Gerund reads best (`processing-pdfs`); a noun phrase (`pdf-processing`) is fine.
 `utils`, `tools`, `documents`, `data` — a name that could cover anything routes to nothing.
 
 **Person is two questions, not one — and only one of them has a settled answer.**
+[ADR 0003](../../doc/adr/0003-description-point-of-view-is-not-a-standard.md).
 
 *In the body:* imperative or infinitive, **never second person**. `To do X, do Y`, not `You
 should do X`. Every source agrees, and the official skill-authoring skill puts it in its own
