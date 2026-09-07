@@ -56,10 +56,17 @@ own good example reads *"…Use when working with PDF files…"*, and the offici
 should be used when…"* instead. A rule whose two authorities contradict one another on the same
 field is not a standard.
 
-Measured, rather than argued: across the 108 distinct descriptions installed on this machine,
-31 are third-person singular, 17 open with *"This skill should be used when…"*, 5 address the
-reader as *you*, and the rest use a bare infinitive. Four forms, shipping side by side, all
-routing. In the same corpus only 58 say **when** at all — which is where the effort belongs.
+Measured, rather than argued — with the method stated, because the first attempt at this count
+was wrong in the direction that suited the argument. Of the 108 distinct descriptions installed
+on this machine, **31 fall below the 40-character floor this repository's own gate calls *too
+thin to route on***: documentation placeholders, not shipped skills. Of the 77 that remain, 19
+open with *"This skill should be used when…"* and 5 address the reader as *you*. The rest open
+with a verb — and whether that verb is an infinitive or a third-person singular **cannot be told
+apart mechanically**, since English does not separate *Process* from *Processes* without a
+lexicon. Several forms ship side by side, and all of them route.
+
+The number worth keeping from the same count: **60 of the 77 say *when*, and 17 do not.** That
+is the field activation is decided on, and the one the gate already warns about.
 
 The one thing every source agrees on, and the only one that changes outcomes: **the
 `description` must say when to use the skill, not only what it does.** It is the sole field

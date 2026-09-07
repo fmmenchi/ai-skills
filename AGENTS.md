@@ -63,6 +63,8 @@ cleanly and is never loaded.
 - **Rebase and merge — the history stays linear.** No merge commits.
 - **Never bypass a hook.** `--no-verify` and its friends are forbidden; a failing gate gets
   fixed, and time pressure is not a justification.
-- **Always wait for CI.** A green run on this machine is evidence about this machine. The
-  pipeline is the answer, and it is worth the wait.
+- **Always wait for CI.** A green run on this machine is evidence about this machine — and the
+  hooks behind it fail open in silence when a working tree has not been installed, so it may be
+  evidence about nothing. `.github/workflows/ci.yml` re-runs the same three gates and is the
+  only one that cannot be skipped from a laptop. It is worth the wait.
 - **Never push.** Fabio pushes.

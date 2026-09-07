@@ -41,21 +41,23 @@ good example reads `Extract text and tables from PDF files… Use when working w
 while the official `skill-development` skill marks that exact shape (`Load when user needs hook
 help.`) as *"Not third person"* and wants `This skill should be used when…` instead.
 
-The corpus follows neither consistently: across 108 distinct installed descriptions, 31 are
-third-person singular, 17 open with `This skill should be used when…`, 5 address the reader, and
-the rest use a bare infinitive. All four route. **So: pick one form, hold it within the skill,
-and do not spend effort converting between them.** The stated mechanism — the description lands
-in a prompt written in third person, and pronouns break the voice — is plausible and nowhere
-demonstrated.
+The corpus follows neither consistently. Of 108 distinct installed descriptions, 31 sit below
+the 40-character floor the gate calls *too thin to route on* — documentation placeholders, not
+shipped skills. Of the remaining 77, 19 open with `This skill should be used when…`, 5 address
+the reader, and the rest open with a verb whose form cannot be classified mechanically (English
+does not separate `Process` from `Processes` without a lexicon). Several forms ship side by side
+and all of them route. **So: pick one form, hold it within the skill, and do not spend effort
+converting between them.** The stated mechanism — the description lands in a prompt written in
+third person, and pronouns break the voice — is plausible and nowhere demonstrated.
 
 One caveat, offered as a suspicion rather than a finding: a **second-person standing order**
 (`you MUST invoke this skill before every X`) reads as an instruction competing with the harness
 rather than as a condition for being selected. The only evidence is that those descriptions are
 also the ones shouting **MANDATORY** in bold to be heard — five cases, no controlled comparison.
 
-What the same measurement does settle: only 58 of those 108 descriptions state *when* at all.
-The field that decides activation is under-served in half the corpus, while the question of
-person is noise. Spend the effort there.
+What the same measurement does settle: 60 of those 77 descriptions state *when*, and 17 do not.
+Roughly a fifth of shipped skills leave out the only field activation is decided on, while the
+question of person is noise. Spend the effort there.
 
 **Concrete triggers beat categories.** `chat rooms, multiplayer games, booking systems` matches
 what a request actually says; *"distributed state"* does not. Include the words the request
