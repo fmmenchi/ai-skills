@@ -1,58 +1,68 @@
 # AGENTS.md
 
-Operating contract for AI coding agents, at the user level: it applies in every repository I
-open, whatever the stack. A project's own `AGENTS.md` is more specific and wins wherever the
-two disagree.
+Operating contract for this repository. This file is the always-on hub: what `ai-skills` is, the
+commands, the gates that must pass, and an index of topic rules. Open a `.agents/doc/*.md` spoke
+only when your task touches that topic. Human-facing documentation lives in `README.md`.
 
-## Interaction
+Do not confuse it with `contract/AGENTS.md`. That file is the **product**: the user-level
+contract this repository ships and symlinks into every tool on the machine. This file governs
+only work done *inside* this repository and is installed nowhere.
 
-- Address me as Fabio. Colleague, not user.
-- Push back with evidence when I am wrong. Say it plainly, once, then carry on.
-- No automatic validation. "You're right" and "perfect" carry no information: explain why,
-  propose an alternative, or challenge the premise.
-- Keep what you verified separate from what you assumed, and never present the second as the
-  first.
+## Project
 
-## Decision framework
+`ai-skills` — the user-level operating contract plus the few skills no vendor could write for
+me, in the Agent Skills open format, installed by symlink and never by copy. Edit a file here
+and every tool sees it at once.
 
-|    | Scope                                                                       | What to do   |
-| -- | --------------------------------------------------------------------------- | ------------ |
-| 🟢 | tests, lint, types, a single function, a refactor inside one file            | do it        |
-| 🟡 | several files, a new feature, an API or schema change, an integration        | propose first |
-| 🔴 | rewrites, core logic, security, anything that can lose data                  | ask first    |
+A skill is admitted only if no vendor can write it, it would not change in the same pull request
+as a code change, and it names capabilities rather than vendor tools. **Say no by default** — an
+empty `skills/` is the correct state until one earns its place, and the bar is having explained
+the same thing to an agent three times. The gates are in
+[architecture](./.agents/doc/architecture.md).
 
-More than three files affected: stop and break the task down before writing code. Ambiguous
-requirement: ask before coding, not after.
+## Setup & commands
 
-## Response shape
+```bash
+pnpm install       # dev dependencies, and the git hooks — husky runs on prepare
+pnpm run check     # the gate — structure fails, style warns
+pnpm run commit    # commitizen: builds a conventional message interactively
+./install.sh       # idempotent; links the contract and each skill, one by one
+```
 
-- Answer first (one to three sentences), then the evidence, then the next step.
-- Length follows the framework above, not the topic: 🟢 the result plus `file:line`; 🟡 what,
-  why and the trade-off in ten lines; 🔴 the reasoning **is** the deliverable, so expand.
-- Always carry, at any length: what was verified against what was assumed, what was
-  deliberately left untouched, and the one thing that can bite later.
-- Never restate the request. Never close with a paragraph repeating what was just said.
+`check-skills.sh` is the project's own gate and passes before anything is reported done. The
+`pre-push` hook runs it too, so nothing leaves the machine with a malformed skill.
 
-## Verification
+Node is here for the commit tooling and nothing else. **No skill may depend on it** — the moment
+a skill needs `pnpm install` to work, it has stopped being portable, which is the one property
+this repository exists to protect.
 
-Run the project's own test, lint and build before reporting a change done — its gate, not a
-generic one. "The tests pass" is not evidence by itself: a test can encode the same wrong
-assumption as the code it covers. Name the observable behaviour and the command that shows it.
+## Topic rules
 
-On failure, do not retry the same way. Classify the error (syntax, logic, design, environment)
-and change approach accordingly.
+| Spoke | Open it when |
+| --- | --- |
+| [architecture](./.agents/doc/architecture.md) | deciding what belongs here, where a file goes, or touching `install.sh` |
+| [authoring](./.agents/doc/authoring.md) | writing or editing anything under `skills/` |
+| [interop](./.agents/doc/interop.md) | a question about which tool reads what, or whether something is portable |
+| [known-issues](./.agents/doc/known-issues.md) | something behaves unexpectedly — read it *before* debugging |
 
-## Git
+Two rules from the spokes are worth carrying even when you never open one, because breaking
+either is silent: **the `description` is the whole routing contract** — it is the only field in
+context at startup, so a skill with a vague one never fires and nothing says why — and
+**`SKILL.md` is case-sensitive to the tools while macOS is not**, so a `SKILL.MD` installs
+cleanly and is never loaded.
 
-- Never push. I push.
-- Never work on `main` unless I say so — branch first.
-- Never bypass a hook. `--no-verify` and its friends are forbidden; a failing gate gets fixed,
-  and time pressure is not a justification.
-- Conventional commits.
+## How we work
 
-## Code
-
-- Match the surrounding style over any preference of your own. Consistency within a file wins.
-- No unrelated changes in a diff, no removing comments, no rewrites without permission.
-- No `improved`, `new` or `enhanced` in a name. No mock modes.
-- Fix the root cause. A workaround that hides the failure is worse than the failure.
+- **Conventional commits, always.** `pnpm run commit` builds the message; the `commit-msg` hook
+  runs commitlint and refuses anything else. The type vocabulary lives in
+  `tools/commit/types.mjs` — one list, read by both the hook and the branch gate, so the two
+  can never disagree.
+- **Semantic branches** — `<type>/<kebab-description>`, the type from that same list, ending
+  with the issue number when there is one. Never work on `main`. The `pre-push` hook rejects
+  anything else.
+- **Rebase and merge — the history stays linear.** No merge commits.
+- **Never bypass a hook.** `--no-verify` and its friends are forbidden; a failing gate gets
+  fixed, and time pressure is not a justification.
+- **Always wait for CI.** A green run on this machine is evidence about this machine. The
+  pipeline is the answer, and it is worth the wait.
+- **Never push.** Fabio pushes.

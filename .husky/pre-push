@@ -1,0 +1,7 @@
+# Semantic branch names — the vocabulary lives in tools/commit/types.mjs,
+# shared with commitlint (one source, no drift).
+node tools/commit/check-branch-name.mjs
+
+# The repository's own gate. Commits stay cheap during iteration; nothing
+# leaves the machine without a malformed skill being caught first.
+./scripts/check-skills.sh
