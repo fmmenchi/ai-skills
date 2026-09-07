@@ -53,11 +53,16 @@ for tool in "${TOOLS[@]}"; do
 done
 
 # The operating contract. Claude Code reads CLAUDE.md, everyone else AGENTS.md.
+#
+# It lives in contract/, not at the root, because the root AGENTS.md is this
+# repository's own project contract and must not be installed anywhere: it
+# would apply its build commands to every repository on the machine.
+CONTRACT="$ROOT/contract/AGENTS.md"
 for tool in $present; do
   if [ "$tool" = claude ]; then
-    link "$ROOT/AGENTS.md" "$HOME/.claude/CLAUDE.md"
+    link "$CONTRACT" "$HOME/.claude/CLAUDE.md"
   else
-    link "$ROOT/AGENTS.md" "$HOME/.$tool/AGENTS.md"
+    link "$CONTRACT" "$HOME/.$tool/AGENTS.md"
   fi
 done
 

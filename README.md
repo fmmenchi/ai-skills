@@ -7,7 +7,7 @@ tool sees it at once.
 ## Layout
 
 ```
-AGENTS.md              the user-level operating contract; applies in every repository I open
+contract/AGENTS.md     the user-level operating contract; applies in every repository I open
 skills/<name>/         a skill in the Agent Skills open format
   SKILL.md               required: YAML frontmatter (name, description) + Markdown body
   references/            documentation loaded into context only when the body calls for it
@@ -15,9 +15,16 @@ skills/<name>/         a skill in the Agent Skills open format
   assets/                files used in the output, never loaded into context
 install.sh             symlinks the contract and the skills into each tool present
 scripts/check-skills.sh conformance check; run it before committing a skill
+AGENTS.md              this repository's own contract — never installed anywhere
 ```
 
-A project's own `AGENTS.md` is more specific than this one and wins where they disagree.
+The two `AGENTS.md` are not the same file and must not be merged. `contract/AGENTS.md` is what
+this repository **ships**: `install.sh` links it as `~/.claude/CLAUDE.md` and `~/.<tool>/AGENTS.md`,
+so it applies everywhere. The root `AGENTS.md` governs work done *inside* this repository — its
+gate, and how a skill is written here. Putting the second where the first used to be would
+install this repository's build commands into every project on the machine.
+
+A project's own `AGENTS.md` is more specific than the shipped contract and wins where they disagree.
 
 ## What is standard here, and what is taste
 

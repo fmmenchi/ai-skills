@@ -1,58 +1,93 @@
 # AGENTS.md
 
-Operating contract for AI coding agents, at the user level: it applies in every repository I
-open, whatever the stack. A project's own `AGENTS.md` is more specific and wins wherever the
-two disagree.
+Operating contract for this repository. It is the always-on hub: what `ai-skills` is, the gate
+that must pass, and how a skill is written here.
 
-## Interaction
+Do not confuse it with `contract/AGENTS.md`. That file is the **product**: the user-level
+contract this repository ships and symlinks into every tool on the machine. This file governs
+only work done *inside* this repository and is never installed anywhere.
 
-- Address me as Fabio. Colleague, not user.
-- Push back with evidence when I am wrong. Say it plainly, once, then carry on.
-- No automatic validation. "You're right" and "perfect" carry no information: explain why,
-  propose an alternative, or challenge the premise.
-- Keep what you verified separate from what you assumed, and never present the second as the
-  first.
+## Project
 
-## Decision framework
+`ai-skills` — the user-level operating contract plus the few skills no vendor could write for
+me, in the Agent Skills open format, installed by symlink and never by copy.
 
-|    | Scope                                                                       | What to do   |
-| -- | --------------------------------------------------------------------------- | ------------ |
-| 🟢 | tests, lint, types, a single function, a refactor inside one file            | do it        |
-| 🟡 | several files, a new feature, an API or schema change, an integration        | propose first |
-| 🔴 | rewrites, core logic, security, anything that can lose data                  | ask first    |
+A skill belongs here only if all three hold: no vendor can write it, it would not change in the
+same pull request as a code change, and it names capabilities rather than vendor tools. The
+reasoning is in `README.md`. **Say no by default** — an empty `skills/` is the correct state
+until one earns its place, and the bar for that is having explained the same thing to an agent
+three times.
 
-More than three files affected: stop and break the task down before writing code. Ambiguous
-requirement: ask before coding, not after.
+Everything else has a home already: client work in `wishew-skills`, project-scoped skills in the
+project, vendor skills in the vendor's marketplace.
 
-## Response shape
+## Commands
 
-- Answer first (one to three sentences), then the evidence, then the next step.
-- Length follows the framework above, not the topic: 🟢 the result plus `file:line`; 🟡 what,
-  why and the trade-off in ten lines; 🔴 the reasoning **is** the deliverable, so expand.
-- Always carry, at any length: what was verified against what was assumed, what was
-  deliberately left untouched, and the one thing that can bite later.
-- Never restate the request. Never close with a paragraph repeating what was just said.
+```bash
+./scripts/check-skills.sh   # the gate — structure fails, style warns
+./install.sh                # idempotent; links the contract and each skill, one by one
+```
 
-## Verification
+`check-skills.sh` is the project's own gate and passes before anything is reported done. Nothing
+else runs here: no Node, no package manager, no build. Markdown and bash are the whole stack.
 
-Run the project's own test, lint and build before reporting a change done — its gate, not a
-generic one. "The tests pass" is not evidence by itself: a test can encode the same wrong
-assumption as the code it covers. Name the observable behaviour and the command that shows it.
+## Writing a skill
 
-On failure, do not retry the same way. Classify the error (syntax, logic, design, environment)
-and change approach accordingly.
+**A skill is read by a model, not by a person.** Assume the reader is already competent and add
+only what it does not already have. Challenge every line: *does this justify its token cost?* If
+a line explains a concept, cut it; if it describes surprising behaviour, keep it. That single
+test decides most of the content.
+
+**Frontmatter — the only part always paid for.** It is the whole routing contract: at startup
+nothing but `name` and `description` is in context, so a good skill with a vague description
+never fires and nothing reports why.
+
+```yaml
+---
+name: same-as-the-directory
+description: <What it does, one sentence, third person>. Use when <concrete triggers — the
+  words a request actually contains, not the category>. <Never when X; read Y instead.>
+---
+```
+
+- `name` — at most 64 characters, lowercase letters, digits and hyphens, identical to the
+  directory. Gerund reads best (`processing-pdfs`); a noun phrase is fine. Never `helper`,
+  `utils`, `tools`, and never the reserved words `claude` or `anthropic`.
+- `description` — at most 1024 characters, **third person**: it is injected into the system
+  prompt, and a mixed point of view measurably hurts discovery. Concrete triggers beat
+  categories — `chat rooms, multiplayer games, booking systems` matches what a request says,
+  *"distributed state"* does not. The negative scope costs one clause and is what stops sibling
+  skills colliding.
+
+**Body under 500 lines**, which the gate warns past. Detail moves into `references/`, linked
+**one level deep from `SKILL.md`** — a reference that only another reference names gets read
+partially, or not at all. A reference file over 100 lines opens with its own table of contents.
+Start with `SKILL.md` alone: splitting early costs a read and saves nothing.
+
+**Match freedom to fragility.** Where several approaches are valid, give direction and let the
+model choose. Where the sequence is fragile and must not vary, give the exact command and say so
+— that is a `scripts/` entry, not numbered prose a model may reinterpret. Scripts are executed
+without entering context, so state which you mean: *run* `x.sh`, or *read* `x.sh` for the
+algorithm.
+
+**One skill = one decision boundary**, not a domain and not a language. Two candidates that
+always fire together are one skill. Two that fire where the other must not are two skills, and
+each states the other's *never when*.
+
+**Sibling skills are written as deltas, not copies.** Open by declaring the difference and name
+the sister that still applies for everything else. It is why a skill can be twenty lines instead
+of four hundred, and why the two never drift apart.
+
+**Write the evaluation before the prose.** Three scenarios where the model fails *without* the
+skill; if you cannot name them, the skill is documenting an imagined problem.
+
+Anti-patterns, all of them cheap to avoid: offering several options with no default; temporal
+phrasing (*"the new API"*, *"currently"*) that goes stale in silence; terminology that drifts
+within one file; backslashes in paths; assuming a package is installed; unqualified MCP tool
+names. And the one specific to this repository — **name capabilities, not vendor tools**, which
+the gate warns on, because it is what decides whether the skill survives being read by a
+different tool.
 
 ## Git
 
-- Never push. I push.
-- Never work on `main` unless I say so — branch first.
-- Never bypass a hook. `--no-verify` and its friends are forbidden; a failing gate gets fixed,
-  and time pressure is not a justification.
-- Conventional commits.
-
-## Code
-
-- Match the surrounding style over any preference of your own. Consistency within a file wins.
-- No unrelated changes in a diff, no removing comments, no rewrites without permission.
-- No `improved`, `new` or `enhanced` in a name. No mock modes.
-- Fix the root cause. A workaround that hides the failure is worse than the failure.
+Conventional commits, semantic branch, never `main`, never `--no-verify`. I push.
