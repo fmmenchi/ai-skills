@@ -7,6 +7,12 @@ them would install this repository's build commands into every project.
 [ADR 0001](../../doc/adr/0001-two-contracts-one-repository.md); human rationale
 `../../README.md`.
 
+**This repository is the harness of a larger programme and knows nothing of it by design.** The
+programme is devmate — a product that takes a GitHub issue to a draft pull request — and its
+plan, its reviews and every decision about the product live in `fmmenchi/devmate`, not here.
+What reaches this repository is only what passes the admission gates below; a skill the product
+needs is the product's, and goes with the product.
+
 ## Layout
 
 | Path | Ships | Read by | Notes |

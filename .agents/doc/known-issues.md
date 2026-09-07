@@ -57,6 +57,18 @@ The branch pattern is also only a charset: `feat/---` and `feat/a` both pass.
 Neither is fixed. CI validates `github.head_ref` on a pull request, which closes the path that
 matters for merging, and leaves direct pushes to other refs unguarded.
 
+## The first branch reached `main` through three merge commits and no pull request
+
+Observed 2026-09-07: `origin/main` carries `b1b67fb`, `a9449ed`, `d27f151`, each `Merge branch
+'feat/project-contract'`, with `gh pr list --state all` empty. The contract says *rebase and
+merge, linear history, always wait for CI* — and CI's branch-name and commit-message gates run
+only on pull requests, so on the first real exercise of the rules nothing was in a position to
+enforce them. CI did run green on the pushes to `main`, but only the skills gate.
+
+Consequence: the history is not linear, and the two PR-only gates have never actually fired. Fix
+is repository configuration, not a file: branch protection with the `check` job required and
+direct pushes to `main` refused. Until that exists, every rule about merging is prose.
+
 ## Nothing local can enforce `--no-verify`
 
 A hook cannot prevent its own bypass, and the contract's prohibition is prose. The workflow in
