@@ -1,0 +1,108 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+#
+# Activation suite: does the skill fire when it should, and stay quiet when it
+# should not. This is the failure that has no other detector — a skill with a
+# vague description never runs and nothing reports why — and it is cheap, so it
+# is the suite that exists first.
+#
+# Outcome tests (does the work get better) need fixtures, a working directory
+# and rubric graders; they are the next config, not this one. See README.
+#
+#   pnpm run evals
+#
+# Authentication: apiKeyRequired false makes the provider reuse the local
+# Claude Code session instead of demanding ANTHROPIC_API_KEY. That is the
+# subscription, not API credits. Verified 2026-09-08 against the provider docs;
+# the same config runs against openai:codex-sdk, which reuses a ChatGPT login
+# when no key is set — which is why this repository is on promptfoo rather than
+# on a single vendor's runner.
+
+description: fresh-context-review — routing
+
+providers:
+  - id: anthropic:claude-agent-sdk
+    label: with-skill
+    config:
+      apiKeyRequired: false
+      setting_sources: ['user']
+      skills: ['fresh-context-review']
+      max_turns: 3
+
+prompts:
+  - '{{request}}'
+
+tests:
+  # ---------------------------------------------------------------- should fire
+  - description: named directly, in Italian, the way it was first asked for
+    vars:
+      request: fai una adversarial review di questo piano
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  - description: named in English
+    vars:
+      request: run an adversarial review of doc/plan.md before I publish it
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  - description: the intent without the words — breaking a plan
+    vars:
+      request: try to break this plan before I send it to the team, tell me where it falls apart
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  - description: a red-team read, the other name for the same thing
+    vars:
+      request: I want a red-team read of this architecture note
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  - description: the second half of the method — integrating findings into a revision
+    vars:
+      request: integrate the review findings into revision 2 of the plan and keep a record
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  - description: before a draft leaves the repository
+    vars:
+      request: this design doc is going out to the client tomorrow, check it properly first
+    assert:
+      - type: skill-used
+        value: fresh-context-review
+
+  # ------------------------------------------------------------ should not fire
+  # The description's negative scope, tested. A skill that fires on everything is
+  # as broken as one that never fires, and costs a hundred lines of context each
+  # time it does.
+  - description: a plain diff review belongs to the project's own code-review skill
+    vars:
+      request: review this pull request for code quality and style
+    assert:
+      - type: not-skill-used
+        value: fresh-context-review
+
+  - description: a one-line edit is not an artefact under review
+    vars:
+      request: fix the typo in the README heading
+    assert:
+      - type: not-skill-used
+        value: fresh-context-review
+
+  - description: reading a document is not reviewing it
+    vars:
+      request: summarise what this plan says in three bullets
+    assert:
+      - type: not-skill-used
+        value: fresh-context-review
+
+  - description: writing is not reviewing
+    vars:
+      request: write me a plan for a nightly report job
+    assert:
+      - type: not-skill-used
+        value: fresh-context-review

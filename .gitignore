@@ -1,2 +1,7 @@
 .DS_Store
 node_modules
+
+# promptfoo writes its run output and cache here; a run costs subscription time
+# and its verdict is read by a person, so nothing about it belongs in git.
+evals/*/output/
+.promptfoo/
