@@ -130,7 +130,11 @@ failed check names the specific problem instead of leaving it to be guessed at.
 
 **Write the evaluation first.** Three scenarios where the model fails *without* the skill. If
 you cannot name them, the skill documents an imagined problem — and the admission bar in
-`architecture.md` has not actually been met.
+`architecture.md` has not actually been met. They live in `doc/evals/<skill-name>/`, one file
+each plus any fixture — **outside** the skill directory, which is symlinked whole into every
+tool — and each must be runnable by a stranger: a fixture, a query, an observable baseline, a
+pass criterion. The gate warns under three. Reviews of a skill go to `doc/reviews/` for the same
+reason. [ADR 0006](../../doc/adr/0006-evals-and-reviews-live-outside-the-skill.md).
 
 Then `pnpm run check`. Structure fails the run, style only warns.
 
