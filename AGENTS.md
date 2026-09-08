@@ -25,6 +25,7 @@ the same thing to an agent three times. The gates are in
 ```bash
 pnpm install       # dev dependencies, and the git hooks — husky runs on prepare
 pnpm run check     # the gate — structure fails, style warns
+pnpm run evals     # a skill's evals, on promptfoo — by hand, never in CI
 pnpm run commit    # commitizen: builds a conventional message interactively
 ./install.sh       # idempotent; links the contract and each skill, one by one
 ```
@@ -42,6 +43,7 @@ this repository exists to protect.
 | --- | --- |
 | [architecture](./.agents/doc/architecture.md) | deciding what belongs here, where a file goes, or touching `install.sh` |
 | [authoring](./.agents/doc/authoring.md) | writing or editing anything under `skills/` |
+| [evals](./.agents/doc/evals.md) | writing, running or reading the result of a skill's evals |
 | [interop](./.agents/doc/interop.md) | a question about which tool reads what, or whether something is portable |
 | [known-issues](./.agents/doc/known-issues.md) | something behaves unexpectedly — read it *before* debugging |
 

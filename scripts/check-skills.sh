@@ -90,11 +90,14 @@ for dir in "${dirs[@]}"; do
     fi
   done < <(grep -oE '(references|scripts|assets)/[A-Za-z0-9._/-]+' "$file" | sort -u)
 
-  # Evals live outside the skill, in doc/evals/<name>/ (ADR 0006), because the
-  # skill directory ships whole. Three scenarios are the bar; this counts files,
-  # which is a floor — whether they are runnable is the review's job.
-  n_evals=$(find "$ROOT/doc/evals/$name" -maxdepth 1 -name '[0-9][0-9]-*.md' 2>/dev/null | wc -l | tr -d ' ')
-  [ "$n_evals" -lt 3 ] && warn "$name: $n_evals eval scenario(s) in doc/evals/$name — three are the bar (ADR 0006)"
+  # Evals live outside the skill, in evals/<name>/ (ADR 0006), because the skill
+  # directory ships whole. Three scenarios are the bar; this counts files, which
+  # is a floor — whether they are runnable is the review's job. The config beside
+  # them is what executes, on promptfoo (ADR 0007).
+  n_evals=$(find "$ROOT/evals/$name" -maxdepth 1 -name '[0-9][0-9]-*.md' 2>/dev/null | wc -l | tr -d ' ')
+  [ "$n_evals" -lt 3 ] && warn "$name: $n_evals eval scenario(s) in evals/$name — three are the bar (ADR 0006)"
+  [ -f "$ROOT/evals/$name/promptfooconfig.yaml" ] \
+    || warn "$name: no evals/$name/promptfooconfig.yaml — the scenarios are documented but nothing runs them (ADR 0007)"
 done
 shopt -u nullglob
 
