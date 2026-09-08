@@ -1,6 +1,18 @@
-# Semantic branch names — the vocabulary lives in tools/commit/types.mjs,
-# shared with commitlint (one source, no drift).
-node tools/commit/check-branch-name.mjs
+# Semantic branch names, checked on the refs actually being pushed. git hands
+# them to this hook on stdin, one per line: "<local ref> <local sha> <remote
+# ref> <remote sha>". Reading HEAD instead — the earlier version — let
+# `git push origin HEAD:refs/heads/anything` through, because HEAD was fine
+# and the remote name was never looked at.
+#
+# The vocabulary lives in tools/commit/types.mjs, shared with commitlint.
+null_sha=0000000000000000000000000000000000000000
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # A deletion pushes the null sha: nothing to name-check.
+  [ "$local_sha" = "$null_sha" ] && continue
+  case "$remote_ref" in
+    refs/heads/*) node tools/commit/check-branch-name.mjs "${remote_ref#refs/heads/}" || exit 1 ;;
+  esac
+done
 
 # The repository's own gate. Commits stay cheap during iteration; nothing
 # leaves the machine without a malformed skill being caught first.
