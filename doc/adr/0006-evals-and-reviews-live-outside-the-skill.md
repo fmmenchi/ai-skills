@@ -19,12 +19,15 @@ A directory convention binds every future skill. That makes it structural.
 
 ## Decision
 
-- **Evals live in `doc/evals/<skill-name>/`**: one file per scenario, numbered, plus any
-  fixture under `fixtures/`. Three is the bar. `check-skills.sh` warns when a skill has fewer.
+- **Evals live in `evals/<skill-name>/`** at the repository root, beside `skills/<skill-name>/`:
+  one file per scenario, numbered, plus any fixture under `fixtures/`. They are tests, and a
+  repository keeps its tests in a directory of their own. Three is the bar; `check-skills.sh`
+  warns when a skill has fewer. What runs them is [ADR 0007](./0007-evals-run-on-promptfoo.md).
 - **Reviews and their records live in `doc/reviews/`**, named
   `<date>-<artefact>-<lens>-r<N>.md`, with `<artefact>.record.md` beside them — never inside a
   skill directory.
-- Nothing under `doc/` is shipped. What ships is `contract/` and `skills/`, and only those.
+- Neither `evals/` nor `doc/` is shipped. What ships is `contract/` and `skills/`, and only
+  those.
 
 ## Consequences
 

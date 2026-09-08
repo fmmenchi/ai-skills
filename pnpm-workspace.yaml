@@ -1,0 +1,15 @@
+# pnpm 11 reads these settings here, not from the "pnpm" field in package.json,
+# which it now ignores with a warning.
+#
+# Nothing here needs a package to run a build script. promptfoo pulls optional
+# native and browser dependencies for features this repository does not use: a
+# headless browser provider, image processing, local model inference. Left
+# undeclared, `pnpm install` exits 1 on every clone asking which to allow.
+# Declaring them false keeps the install green and records the choice.
+allowBuilds:
+  '@playwright/browser-chromium': false
+  '@swc/core': false
+  esbuild: false
+  onnxruntime-node: false
+  protobufjs: false
+  sharp: false
