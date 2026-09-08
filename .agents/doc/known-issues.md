@@ -46,16 +46,17 @@ Run `pnpm install` once per working tree — including every new worktree — an
 commit as evidence of nothing until you have. CI re-runs the same gates precisely because this
 one cannot be trusted.
 
-## `pre-push` checks the branch you are on, not the ref you push
+## `pre-push` used to check the branch you were on, not the ref you pushed
 
-It reads `git rev-parse --abbrev-ref HEAD` and ignores the refs git hands it on stdin, so
-`git push origin HEAD:refs/heads/anything` satisfies the gate and creates a non-semantic remote
-branch. Inherited from `shared-platform`, where the same hole is open.
+Until 2026-09-07 it read `git rev-parse --abbrev-ref HEAD` and ignored the refs git hands it on
+stdin, so `git push origin HEAD:refs/heads/anything` satisfied the gate and created a
+non-semantic remote branch. The branch pattern was also only a charset: `feat/---` and `feat/a`
+both passed.
 
-The branch pattern is also only a charset: `feat/---` and `feat/a` both pass.
-
-Neither is fixed. CI validates `github.head_ref` on a pull request, which closes the path that
-matters for merging, and leaves direct pushes to other refs unguarded.
+Fixed here: the hook reads stdin and checks every `refs/heads/*` being pushed (deletions carry
+the null sha and are skipped), and the pattern wants words joined by single separators with a
+description of at least three characters. **The same hole is still open in `shared-platform`**,
+which this hook was copied from — port the fix there.
 
 ## The first branch reached `main` through three merge commits and no pull request
 
