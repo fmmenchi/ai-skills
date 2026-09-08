@@ -32,6 +32,7 @@ already check.
 | [0001](./0001-two-contracts-one-repository.md) | Two contracts, one repository |
 | [0002](./0002-node-serves-the-repository-never-the-skills.md) | Node serves the repository, never the skills |
 | [0003](./0003-description-point-of-view-is-not-a-standard.md) | The description's point of view is not a standard |
+| [0005](./0005-pipeline-skills-live-with-the-product.md) | Pipeline skills live with the product; this repository stays craft-only |
 
 ## Open
 
