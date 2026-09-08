@@ -33,6 +33,7 @@ already check.
 | [0002](./0002-node-serves-the-repository-never-the-skills.md) | Node serves the repository, never the skills |
 | [0003](./0003-description-point-of-view-is-not-a-standard.md) | The description's point of view is not a standard |
 | [0005](./0005-pipeline-skills-live-with-the-product.md) | Pipeline skills live with the product; this repository stays craft-only |
+| [0006](./0006-evals-and-reviews-live-outside-the-skill.md) | A skill's evals and reviews live outside the skill, under `doc/` |
 
 ## Open
 
