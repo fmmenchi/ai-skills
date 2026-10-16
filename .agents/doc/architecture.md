@@ -23,7 +23,7 @@ needs is the product's, and goes with the product.
 | `.agents/doc/*.md` | no | on demand, when a task touches the topic | this file and its siblings; states decisions, never makes them |
 | `apps/docusaurus/docs/adr/` | no | before any structural decision, and to find why one was taken | the record; an ADR precedes the change it describes — see `workflow.md` |
 | `apps/docusaurus/docs/reviews/` | no | when reviewing a skill, and to find what a review changed | reviews verbatim, with `<artefact>.record.md` beside them (ADR 0006, location by ADR 0008) |
-| `doc/evals/<name>/` | no | when writing or running a skill's evals | outside the skill, because the skill ships whole (ADR 0006) |
+| `evals/<name>/` | no | when writing or running a skill's evals | outside the skill, because the skill ships whole (ADR 0006); run on promptfoo (ADR 0007) |
 | `scripts/check-skills.sh` | no | the `pre-push` hook, `pnpm run check`, and any repository that pins it with a root argument | the gate |
 | `tools/commit/` | no | commitlint and the branch-name gate | one vocabulary, two enforcement points |
 | `apps/docusaurus/` | no | `pnpm nx run @fmmenchi/ai-skills-docs:*` | the docs site; see *The docs site* below |

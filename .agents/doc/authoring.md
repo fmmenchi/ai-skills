@@ -143,7 +143,7 @@ requests that should fire it, `not-skill-used` on the near misses that belong to
 because a skill with a vague description never fires and nothing reports why. Run it by hand
 with `pnpm run evals` when something changed, never in CI. The gate warns under three scenarios
 and when the config is missing; neither blocks.
-[ADR 0007](../../doc/adr/0007-evals-run-on-promptfoo.md).
+[ADR 0007](../../apps/docusaurus/docs/adr/0007-evals-run-on-promptfoo.md).
 
 Then `pnpm run check`. Structure fails the run, style only warns.
 
