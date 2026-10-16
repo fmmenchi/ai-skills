@@ -2,12 +2,41 @@
 # Check every skill against the Agent Skills open standard, plus the portability
 # rule this repository adds on top.
 #
+#   scripts/check-skills.sh [root]
+#
+# `root` is the repository whose skills/ is checked, and defaults to the one this
+# script lives in. It exists for a consumer that runs this exact file, pinned by
+# commit, from somewhere else — a cache directory — against its own skills/:
+# deriving the root from the script's location would check the wrong repository
+# and pass.
+#
 # Fail-closed on structure: a malformed skill is silently ignored by the tools,
 # which is the worst failure mode there is. Warn-only on style: a linter that
 # cries wolf gets switched off.
 set -uo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [ $# -gt 1 ]; then
+  echo "usage: $(basename "$0") [root]" >&2
+  exit 2
+fi
+
+if [ $# -eq 1 ]; then
+  # An explicit root is a claim about where the skills are. A typo must not turn
+  # into "nothing to check", so every way of being wrong about it is an error.
+  if [ ! -d "$1" ]; then
+    echo "ERROR  root '$1' is not a directory" >&2
+    exit 2
+  fi
+  ROOT="$(cd "$1" && pwd)"
+  if [ ! -d "$ROOT/skills" ]; then
+    echo "ERROR  root '$ROOT' has no skills/ directory" >&2
+    exit 2
+  fi
+else
+  # This repository's own skills/. Git cannot track an empty directory, so here a
+  # missing skills/ is the empty state, and that state is valid.
+  ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
 errors=0
 warnings=0
 

@@ -122,11 +122,14 @@ and the ones with no `~/.<tool>` yet are named in the summary rather than skippe
 ## Check
 
 ```bash
-./scripts/check-skills.sh
+./scripts/check-skills.sh           # this repository's skills/
+./scripts/check-skills.sh <root>    # another repository's skills/, with this exact script
 ```
 
 Structure fails the run: a malformed skill is ignored by the tools without saying so, which is
 the worst failure mode available. Style only warns — a check that cries wolf gets switched off.
+An explicit root that does not exist, or has no `skills/`, is an error rather than an empty
+pass: a typo must not read as "nothing to check".
 
 ## Distribution
 
