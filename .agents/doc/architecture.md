@@ -22,9 +22,12 @@ needs is the product's, and goes with the product.
 | `AGENTS.md` | no | agents working in this repository | hub; the spokes in `.agents/doc/` are opened on demand |
 | `.agents/doc/*.md` | no | on demand, when a task touches the topic | this file and its siblings; states decisions, never makes them |
 | `doc/adr/` | no | before any structural decision, and to find why one was taken | the record; an ADR precedes the change it describes |
-| `scripts/check-skills.sh` | no | the `pre-push` hook, and `pnpm run check` | the gate |
+| `scripts/check-skills.sh` | no | the `pre-push` hook, `pnpm run check`, and any repository that pins it with a root argument | the gate |
 | `tools/commit/` | no | commitlint and the branch-name gate | one vocabulary, two enforcement points |
-| `.github/workflows/ci.yml` | no | GitHub Actions | re-runs the three gates; the only one a laptop cannot skip |
+| `apps/docusaurus/` | no | `pnpm nx run docs:*` | the docs site; serves README, ADRs and skills from source — see `workspace.md` |
+| `nx.json`, `pnpm-workspace.yaml`, `.npmrc` | no | Nx and pnpm | the workspace; `.npmrc` maps `@fmmenchi` to GitHub Packages |
+| `.gemini/settings.json` | no | Gemini CLI | points it at `AGENTS.md`; agent settings are tracked, agent state is ignored |
+| `.github/workflows/ci.yml` | no | GitHub Actions | re-runs the gates; the only one a laptop cannot skip |
 | `install.sh` | no | run by hand | idempotent; never overwrites a non-symlink |
 
 Skills are linked **one by one**, never by linking `skills/` itself: the destination directories
@@ -48,13 +51,16 @@ having explained the same thing to an agent three times.
 
 ## The Node boundary
 
-Node is here for the commit tooling and nothing else. **No skill may depend on it.** A skill is
+Node is here for the repository — the commit tooling, Nx and the docs site — and nothing else.
+**No skill may depend on it.** A skill is
 Markdown, plus — where it needs determinism — a script that runs with what its reader already
 has. The moment a skill needs `pnpm install`, it has stopped being portable, which is the one
 property this repository exists to protect.
 
-The same reasoning bounds any future build step: it may serve the repository, never the skills.
-[ADR 0002](../../doc/adr/0002-node-serves-the-repository-never-the-skills.md).
+The same reasoning bounds every build step: it may serve the repository, never the skills. The
+docs site reads the skills; nothing in a skill reads the site.
+[ADR 0002](../../doc/adr/0002-node-serves-the-repository-never-the-skills.md),
+[ADR 0004](../../doc/adr/0004-a-docs-site-for-this-repository.md).
 
 ## What is standard, and what is not
 
