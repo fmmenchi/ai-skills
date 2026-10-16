@@ -18,8 +18,17 @@ are installed — it belongs to the standard rather than to a vendor.
 Per-tool guessing was the earlier design and it was **wrong**: opencode does not read
 `~/.opencode/skills` at all. See `known-issues.md`.
 
-The operating contract is the exception that does follow each tool's own directory, because the
-filename differs: Claude Code reads `CLAUDE.md`, everyone else `AGENTS.md`.
+The operating contract is the exception that does follow each tool's own directory, because
+what each tool reads there is not settled:
+
+| Level | Claude Code | Gemini CLI | the rest |
+| --- | --- | --- | --- |
+| project (a repository's root) | `AGENTS.md` — **verified**: it loaded this repository's with no `CLAUDE.md` present | `GEMINI.md` by default; `.gemini/settings.json` names `AGENTS.md` | `AGENTS.md` |
+| user (`~/.<tool>/`) | **not verified**; `install.sh` links the contract as `~/.claude/CLAUDE.md` until it is | — | `AGENTS.md` |
+
+So in this repository there is no `CLAUDE.md` and no symlink to one: `AGENTS.md` is the only
+contract ([ADR 0008](../../doc/adr/0008-agentic-workspace-on-the-shared-platform-model.md)). At
+user level the older belief stands until it is tested — see `known-issues.md`.
 
 ## What crosses the boundary
 
@@ -28,7 +37,7 @@ filename differs: Claude Code reads `CLAUDE.md`, everyone else `AGENTS.md`.
 | `SKILL.md` and its frontmatter | `allowed-tools:` — a Claude Code field, not part of the standard |
 | the `references/` `scripts/` `assets/` split | `mcp__*` tool names, and any vendor tool name |
 | plain Markdown in the body | distribution via a marketplace |
-| a script that runs with what the reader has | the contract filename (`CLAUDE.md` vs `AGENTS.md`) |
+| a script that runs with what the reader has | the contract filename at user level (`CLAUDE.md` vs `AGENTS.md`, unverified) |
 
 The format travels between tools on its own. **The wording is what decides whether the skill
 survives the trip** — which is why the admission gate in `architecture.md` requires naming

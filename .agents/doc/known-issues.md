@@ -31,6 +31,18 @@ until `./install.sh` runs — editing it changes nothing anywhere until then.
 Corollary: moving that file cannot break a symlink that was never created. It *will* break one
 once the installer has run, so re-run `./install.sh` after any move.
 
+## Claude Code reads `AGENTS.md` at project level; at user level nobody has checked
+
+Verified at project level: Claude Code loaded this repository's `AGENTS.md` with no `CLAUDE.md`
+present, which is why there is none here (ADR 0008). **Not verified at user level.** `install.sh`
+still links the shipped contract as `~/.claude/CLAUDE.md`, on the older belief that Claude Code
+reads only that name.
+
+Do not change the installer on the strength of the project-level result: a user-level contract
+that is not loaded fails silently, in every repository at once. To settle it, link the contract
+as `~/.claude/AGENTS.md` alone, open a session in a repository with no contract of its own, and
+ask for a rule only that file states. Until then the `CLAUDE.md` link stays.
+
 ## The hooks fail open, silently, and look installed while doing nothing
 
 `core.hooksPath` is written to the **shared** `.git/config` — verified with `git config
