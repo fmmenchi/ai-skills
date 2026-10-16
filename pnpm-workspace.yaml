@@ -1,14 +1,22 @@
+# The only workspace member is the docs site. Skills are not packages and never
+# will be: no skill may depend on Node (ADR 0002).
+packages:
+  - 'apps/*'
+
 # pnpm 11 reads these settings here, not from the "pnpm" field in package.json,
-# which it now ignores with a warning.
+# which it now ignores with a warning. It runs no dependency build script unless
+# it is named here.
 #
-# Nothing here needs a package to run a build script. promptfoo pulls optional
-# native and browser dependencies for features this repository does not use: a
-# headless browser provider, image processing, local model inference. Left
-# undeclared, `pnpm install` exits 1 on every clone asking which to allow.
-# Declaring them false keeps the install green and records the choice.
+# nx needs its own. promptfoo pulls optional native and browser dependencies for
+# features this repository does not use: a headless browser provider, image
+# processing, local model inference. Left undeclared, `pnpm install` exits 1 on
+# every clone asking which to allow. Declaring them false keeps the install
+# green and records the choice.
 allowBuilds:
+  nx: true
   '@playwright/browser-chromium': false
   '@swc/core': false
+  core-js: false
   esbuild: false
   onnxruntime-node: false
   protobufjs: false

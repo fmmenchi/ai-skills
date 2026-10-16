@@ -11,3 +11,8 @@ evals/*/output/
 .claude/worktrees/
 .claude/settings.local.json
 .cache/
+
+# Nx
+.nx/cache
+.nx/workspace-data
+.nx/migrate-runs
