@@ -2,10 +2,11 @@
 # sets per working tree, so a clone that has not installed runs no hook and says
 # nothing about it. `--no-verify` bypasses them outright. This workflow is the
 # only enforcement that cannot be skipped from a laptop, which is why it re-runs
-# the same three gates instead of trusting that they ran locally.
+# the same gates instead of trusting that they ran locally.
 #
-# It only *reports*, though. A failing check does not stop a merge until the job
-# is marked required in the repository's branch-protection rules.
+# The job is named `check` and must stay so: branch protection on `main`
+# requires a check of exactly that name, and a renamed job leaves every pull
+# request waiting on one that never reports.
 name: CI
 
 on:
@@ -15,6 +16,9 @@ on:
 
 permissions:
   contents: read
+  # The docs plugin comes from GitHub Packages (ADR 0004), and the frozen install
+  # 401s without a token that may read it.
+  packages: read
 
 env:
   # husky's prepare script would otherwise install hooks into a throwaway runner.
@@ -30,17 +34,25 @@ jobs:
           # contain those commits.
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v7
+      # shared-platform's setup brick: pnpm, Node, a frozen install. Pinned by
+      # commit, not by tag — a tag can be moved, a SHA cannot (ADR 0008). This is
+      # gh-actions/v0.4.4.
+      #
+      # `registry-url` is not for publishing here: it makes setup-node write the
+      # auth line that resolves `github-token` into a USER-level npmrc, the only
+      # place pnpm expands it. See .npmrc.
+      - uses: fmmenchi/shared-platform/packages/ops/gh-actions/actions/setup@39cc0af814c94f6502d5cf4c12a8ccab0e5b4aba
         with:
-          node-version: '24'
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          registry-url: https://npm.pkg.github.com
 
       - name: Skills conform
-        run: ./scripts/check-skills.sh
+        run: pnpm run check
+
+      # Every link between README, the ADRs and the skills must resolve, or the
+      # build fails. The same command as the definition of done in AGENTS.md.
+      - name: Docs site builds
+        run: pnpm nx run docs:build
 
       - name: Branch name is semantic
         if: github.event_name == 'pull_request'
