@@ -5,3 +5,9 @@ node_modules
 # and its verdict is read by a person, so nothing about it belongs in git.
 evals/*/output/
 .promptfoo/
+
+# Agent state — per machine, per session. Agent settings are tracked; this is
+# not (ADR 0008).
+.claude/worktrees/
+.claude/settings.local.json
+.cache/
