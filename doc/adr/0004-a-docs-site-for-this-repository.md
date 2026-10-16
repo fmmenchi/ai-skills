@@ -1,7 +1,7 @@
 # ADR 0004 — A docs site for this repository
 
-- **Status:** proposed (2026-09-07) — deliberately open
-- **Date:** 2026-09-07
+- **Status:** accepted (2026-10-15) — option A, ahead of its own trigger; see *Decision*
+- **Date:** 2026-09-07, decided 2026-10-15
 - **Deciders:** Fabio Menchicchi
 
 ## Context and problem statement
@@ -52,3 +52,54 @@ number, matching the rule that admits a skill in the first place. Before then, t
 Whatever is chosen must not violate
 [ADR 0002](./0002-node-serves-the-repository-never-the-skills.md): a site serves the repository,
 and no skill may come to depend on it.
+
+## Decision
+
+**Option A, taken on 2026-10-15 by Fabio — and taken against this ADR's own trigger.** The
+trigger above says to revisit at about three skills; `skills/` holds one. The override is
+deliberate and recorded here rather than smoothed over: the reason is not that the content now
+asks for a site, it is to bring this repository onto the same model as `shared-platform` — one
+Nx workspace shape, one docs plugin, one CI toolkit across the repositories
+([ADR 0008](./0008-agentic-workspace-on-the-shared-platform-model.md)). The argument *"the
+decision buys nothing now"* still holds, and is accepted as the price of that alignment.
+
+What was adopted, and where it departs from the plugin's generated output:
+
+- `@fmmenchi/nx-docusaurus` **0.0.20** (not the 0.0.19 named above), generating the site under
+  `apps/docusaurus` with its `site` generator.
+- **The ADRs stay in `doc/adr/`.** They are referenced by commit messages, by `AGENTS.md` and its
+  spokes, and from outside the repository; `shared-platform` keeps its ADRs inside the site, and
+  that part of its model is not followed. The site serves them **from where they are written**:
+  its one docs instance is rooted at the repository, with an allow-list of `README.md`,
+  `doc/adr/*.md`, `skills/*/SKILL.md` and `skills/*/references/**/*.md`. Nothing is copied and
+  no file is added to `doc/adr/` or to a skill directory for the site's sake — a skill directory
+  ships whole (ADR 0006), so a site marker inside it would ship too.
+- **One instance, not two.** A second instance whose directory lies inside the first one's has
+  its Markdown compiled by both loaders; measured, the page rendered as the literal text
+  `export const frontMatter = {` with the build green, and with the broken-link check blind to
+  that page. So the generator's co-located `docs/` stays only as the place its `sync-docs`
+  assembles into, included by the same instance, and `README.md` is the landing page.
+- **The build's cache inputs name those files.** The generated `build` target hashes only its
+  own project directory, so an edit to an ADR was served a cache hit and the stale site —
+  measured. The inputs list `README.md`, `doc/adr/` and `skills/` and must move with the
+  allow-list.
+- The generated site depends on the plugin as `workspace:*`, which only resolves inside
+  `shared-platform`; here it is the published version.
+
+The question this ADR left open — whether GitHub Packages is readable from this repository's CI —
+is **still open**. The install passes the job's token with `packages: read`; whether the
+package grants this repository access is a package setting in `shared-platform`, and only the
+first CI run answers it.
+
+## Consequences
+
+[ADR 0002](./0002-node-serves-the-repository-never-the-skills.md) holds: the site reads the
+skills, and nothing in a skill reads the site. No file under `skills/` changed.
+
+The docs build becomes a gate: `onBrokenLinks: 'throw'` turns a dead link between ADRs into a
+red build, which nothing checked before. It runs in CI and in the definition of done, not in the
+`pre-push` hook, which stays bash and Node-only and fast.
+
+The cost is the one the context named: `pnpm install` now pulls a docs toolchain, and needs a
+GitHub Packages token, for a repository whose shipped content is Markdown and bash. That includes
+a clone that wants nothing but the commit hooks.
