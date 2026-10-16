@@ -39,6 +39,13 @@ without Nx.
 
 **The docs site** is [ADR 0004](./0004-a-docs-site-for-this-repository.md), option A.
 
+**The docs are symmetric with `shared-platform` and devmate.** The site has the generator's
+standard shape, and the repository's own human documentation lives in it: ADRs in
+`apps/docusaurus/docs/adr/`, skill reviews and their records in `apps/docusaurus/docs/reviews/`.
+This **supersedes [ADR 0006](./0006-evals-and-reviews-live-outside-the-skill.md) on the location
+of reviews only**; its rule that reviews and evals live outside the skill directory stands, and
+evals are not moved here. `README.md`, `contract/` and `skills/` stay where they are.
+
 **CI uses the `setup` brick of `@fmmenchi/gh-actions`, pinned by commit SHA**, not by tag — a tag
 can be moved, a SHA cannot. The job keeps the name `check`, because branch protection on `main`
 requires a check of exactly that name, and renaming it would leave every pull request waiting
@@ -61,7 +68,6 @@ in it, and an empty one would claim otherwise. Per-machine and per-session state
   pushed, so `git push origin HEAD:refs/heads/anything` passes it. The hook here was fixed in
   `ca6af02` to read the refs git hands it, and it stays.
 - **`CLAUDE.md` symlinks beside every `AGENTS.md`.** Superseded by the first decision above.
-- **ADRs inside the docs site.** They stay in `doc/adr/`; ADR 0004 has the reasons.
 
 ## Consequences
 

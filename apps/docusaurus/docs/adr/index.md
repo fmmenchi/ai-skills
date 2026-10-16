@@ -1,6 +1,11 @@
+---
+title: Architecture Decision Records
+sidebar_position: 0
+---
+
 # Architecture Decision Records
 
-Structural decisions for `ai-skills` are recorded here, one file per decision, numbered
+Structural decisions for `ai-skills` are recorded here, in `apps/docusaurus/docs/adr/`, one file per decision, numbered
 sequentially: `NNNN-<kebab-title>.md`.
 
 **No structural or architectural decision is made until it is written here.** Not the commit
@@ -34,6 +39,6 @@ already check.
 | [0003](./0003-description-point-of-view-is-not-a-standard.md) | The description's point of view is not a standard |
 | [0004](./0004-a-docs-site-for-this-repository.md) | A docs site for this repository |
 | [0005](./0005-pipeline-skills-live-with-the-product.md) | Pipeline skills live with the product; this repository stays craft-only |
-| [0006](./0006-evals-and-reviews-live-outside-the-skill.md) | A skill's evals and reviews live outside the skill |
+| [0006](./0006-evals-and-reviews-live-outside-the-skill.md) | A skill's evals and reviews live outside the skill — reviews location superseded by 0008 |
 | [0007](./0007-evals-run-on-promptfoo.md) | Evals run on promptfoo, by hand when something changed, never in CI |
 | [0008](./0008-agentic-workspace-on-the-shared-platform-model.md) | An agentic workspace on the shared-platform model |

@@ -16,11 +16,12 @@ skills/<name>/         a skill in the Agent Skills open format
 install.sh             symlinks the contract and the skills into each tool present
 scripts/check-skills.sh conformance check; run it before committing a skill
 AGENTS.md              this repository's own contract — never installed anywhere
-.agents/doc/*.md       topic rules, opened on demand: architecture, authoring, evals, interop,
-                         workspace, known issues
+.agents/doc/*.md       topic rules, opened on demand: architecture, workflow, authoring,
+                         evals, interop, known issues
 evals/<name>/          a skill's three scenarios, its fixtures, and the promptfoo config that runs them
-doc/adr/               the decisions, and why; an ADR precedes the change it describes
-apps/docusaurus/       the docs site: this README, the ADRs and the skills, served from source
+apps/docusaurus/       the docs site; links each skill's SKILL.md
+  docs/adr/              the decisions, and why; an ADR precedes the change it describes
+  docs/reviews/          reviews of the skills, verbatim, with the record of what each changed
 tools/commit/          the commit-type vocabulary, read by commitlint and the branch gate
 ```
 

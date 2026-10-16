@@ -27,7 +27,7 @@ what each tool reads there is not settled:
 | user (`~/.<tool>/`) | **not verified**; `install.sh` links the contract as `~/.claude/CLAUDE.md` until it is | — | `AGENTS.md` |
 
 So in this repository there is no `CLAUDE.md` and no symlink to one: `AGENTS.md` is the only
-contract ([ADR 0008](../../doc/adr/0008-agentic-workspace-on-the-shared-platform-model.md)). At
+contract ([ADR 0008](../../apps/docusaurus/docs/adr/0008-agentic-workspace-on-the-shared-platform-model.md)). At
 user level the older belief stands until it is tested — see `known-issues.md`.
 
 ## What crosses the boundary

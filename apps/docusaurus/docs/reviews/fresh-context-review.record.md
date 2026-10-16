@@ -1,7 +1,7 @@
 # Review record — `fresh-context-review`
 
 One section per review, headed by the review's file name. One row per finding. Checked by
-`skills/fresh-context-review/scripts/check-record.sh fresh-context-review doc/reviews`.
+`skills/fresh-context-review/scripts/check-record.sh fresh-context-review apps/docusaurus/docs/reviews`.
 
 ## 2026-09-08-fresh-context-review-adversarial-r1.md
 
