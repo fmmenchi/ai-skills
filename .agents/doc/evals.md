@@ -22,8 +22,8 @@ evals/<skill-name>/
 ```
 
 At the repository root, never inside `skills/<name>/`, which `install.sh` symlinks whole into
-every tool ([ADR 0006](../../doc/adr/0006-evals-and-reviews-live-outside-the-skill.md)). What
-runs them is [ADR 0007](../../doc/adr/0007-evals-run-on-promptfoo.md).
+every tool ([ADR 0006](../../apps/docusaurus/docs/adr/0006-evals-and-reviews-live-outside-the-skill.md)). What
+runs them is [ADR 0007](../../apps/docusaurus/docs/adr/0007-evals-run-on-promptfoo.md).
 
 The **scenarios are the evidence the skill was needed** — three situations where an agent failed
 without it, observed rather than invented. The admission criterion asks for them before the
