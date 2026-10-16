@@ -100,23 +100,12 @@ Worse, and easy to miss: such a worktree branches from `origin/<default>` by def
 **not** contain unpushed local commits. Check `git log` on entering one, and reset onto the
 intended tip before working.
 
-## The docs site generator assumes it runs inside `shared-platform`
+## The docs site generator writes `workspace:*` for itself
 
-Three things `@fmmenchi/nx-docusaurus@0.0.20`'s `site` generator writes are wrong in a consumer,
-each found by measurement on 2026-10-15. All three are fixed in `apps/docusaurus` by hand; the
-fixes belong upstream, in the generator, the way the `pre-push` fix belongs in
-`shared-platform`.
-
-- **The site depends on the plugin as `workspace:*`**, which resolves only where the plugin is a
-  workspace package. Here it is the published version.
-- **The `build` target's inputs are `{projectRoot}/**/*` only.** This site serves `README.md`,
-  `doc/adr/` and `skills/` from outside that directory, so an edited ADR was served a cache hit
-  and the stale site. The inputs now name those paths, and they must move with the `include`
-  list in `docusaurus.config.ts`.
-- **Two docs instances that nest double-compile.** A second instance rooted at the repository
-  matched the generator's co-located `docs/` too; that page rendered as the literal text
-  `export const frontMatter = {`, the build stayed green, and the broken-link check could not
-  see the page's links. There is one instance, rooted at the repository, with an allow-list.
+`@fmmenchi/nx-docusaurus@0.0.20`'s `site` generator makes the site depend on the plugin as
+`workspace:*`, which resolves only inside `shared-platform`, where the plugin is a workspace
+package. Here `apps/docusaurus/package.json` pins the published version. The fix belongs
+upstream, in the generator, the way the `pre-push` fix belongs in `shared-platform`.
 
 ## macOS ships bash 3.2
 

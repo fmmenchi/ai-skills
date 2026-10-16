@@ -67,22 +67,17 @@ What was adopted, and where it departs from the plugin's generated output:
 
 - `@fmmenchi/nx-docusaurus` **0.0.20** (not the 0.0.19 named above), generating the site under
   `apps/docusaurus` with its `site` generator.
-- **The ADRs stay in `doc/adr/`.** They are referenced by commit messages, by `AGENTS.md` and its
-  spokes, and from outside the repository; `shared-platform` keeps its ADRs inside the site, and
-  that part of its model is not followed. The site serves them **from where they are written**:
-  its one docs instance is rooted at the repository, with an allow-list of `README.md`,
-  `doc/adr/*.md`, `skills/*/SKILL.md` and `skills/*/references/**/*.md`. Nothing is copied and
-  no file is added to `doc/adr/` or to a skill directory for the site's sake — a skill directory
-  ships whole (ADR 0006), so a site marker inside it would ship too.
-- **One instance, not two.** A second instance whose directory lies inside the first one's has
-  its Markdown compiled by both loaders; measured, the page rendered as the literal text
-  `export const frontMatter = {` with the build green, and with the broken-link check blind to
-  that page. So the generator's co-located `docs/` stays only as the place its `sync-docs`
-  assembles into, included by the same instance, and `README.md` is the landing page.
-- **The build's cache inputs name those files.** The generated `build` target hashes only its
-  own project directory, so an edit to an ADR was served a cache hit and the stale site —
-  measured. The inputs list `README.md`, `doc/adr/` and `skills/` and must move with the
-  allow-list.
+- **The site has the generator's standard shape, the same as `shared-platform`'s and devmate's:**
+  one docs instance over the co-located `apps/docusaurus/docs/`. Fabio chose symmetry across the
+  three repositories over keeping files where they were, so the human documentation that is
+  this repository's own moved into it: the ADRs to `docs/adr/` (this index became
+  `docs/adr/index.md`) and the skill reviews to `docs/reviews/`
+  ([ADR 0008](./0008-agentic-workspace-on-the-shared-platform-model.md)). Commit messages written
+  before the move still name `doc/adr/`; they are history and stay as they are.
+- **The skills are linked, never copied.** The home page links each skill to its `SKILL.md` on
+  GitHub. A skill directory ships whole (ADR 0006), so it gains no site file, and a copy in the
+  site would be a second source that drifts. `README.md` stays at the root, where GitHub shows
+  it; the home page is adapted from it and links to it.
 - The generated site depends on the plugin as `workspace:*`, which only resolves inside
   `shared-platform`; here it is the published version.
 
@@ -97,7 +92,8 @@ first CI run answers it.
 skills, and nothing in a skill reads the site. No file under `skills/` changed.
 
 The docs build becomes a gate: `onBrokenLinks: 'throw'` turns a dead link between ADRs into a
-red build, which nothing checked before. It runs in CI and in the definition of done, not in the
+red build, which nothing checked before. A link from the site to a skill or to the README
+points at GitHub, and that check cannot see it. It runs in CI and in the definition of done, not in the
 `pre-push` hook, which stays bash and Node-only and fast.
 
 The cost is the one the context named: `pnpm install` now pulls a docs toolchain, and needs a

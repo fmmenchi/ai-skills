@@ -1,6 +1,6 @@
 # ADR 0006 — A skill's evals and reviews live outside the skill
 
-- **Status:** accepted (2026-09-08)
+- **Status:** accepted (2026-09-08); reviews location superseded by [0008](./0008-agentic-workspace-on-the-shared-platform-model.md)
 - **Date:** 2026-09-08
 - **Deciders:** Fabio Menchicchi
 

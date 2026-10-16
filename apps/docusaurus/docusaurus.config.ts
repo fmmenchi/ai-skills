@@ -1,18 +1,14 @@
 import type { Config } from '@docusaurus/types';
 
 /**
- * One docs instance, rooted at the REPOSITORY, not at the co-located `docs/` the
- * `@fmmenchi/nx-docusaurus` site generator points it at. ADR 0004.
+ * Single-instance docs site over the co-located `docs/`. Workspace docs are
+ * authored there directly; per-package docs live in each package's `docs/`
+ * folder and are assembled under `docs/<category>/` (one folder per `doc:` tag) by the
+ * `@fmmenchi/nx-docusaurus` config-generator + sync-docs executors (the
+ * `build`/`serve` targets depend on them).
  *
- * `README.md`, the ADRs and the skills are served from where they are written.
- * Nothing is copied or moved: `doc/adr/` is referenced by commits, memory and
- * AGENTS.md, and a skill directory is symlinked whole into every tool, so neither
- * may grow site-only files.
- *
- * ONE instance, and that is not taste. A second instance whose directory lies
- * inside this one's (the generator's `docs/` does) has its Markdown matched by
- * both instances' loaders and compiled twice: measured, the page rendered as the
- * literal text `export const frontMatter = {`, and the build stayed green.
+ * The skills are linked from the home page to their SKILL.md on GitHub, never
+ * copied here: a skill directory ships whole, and a second copy would drift.
  */
 const config: Config = {
   title: 'ai-skills',
@@ -33,21 +29,9 @@ const config: Config = {
       'classic',
       {
         docs: {
-          path: '../..',
+          path: 'docs',
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
-          // An allow-list, never a walk of the root: node_modules and the
-          // worktrees under .claude/ must stay out. `contract/` and
-          // `.agents/doc/` are written for agents, not people, and are left out
-          // on purpose. The last line is where the plugin's sync-docs assembles
-          // any Nx project's own docs/ — none today, kept so that one would show.
-          include: [
-            'README.md',
-            'doc/adr/*.md',
-            'skills/*/SKILL.md',
-            'skills/*/references/**/*.md',
-            'apps/docusaurus/docs/**/*.{md,mdx}',
-          ],
         },
         blog: false,
         theme: { customCss: './src/css/custom.css' },
@@ -58,18 +42,6 @@ const config: Config = {
     navbar: {
       title: 'ai-skills',
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'skills',
-          label: 'Skills',
-          position: 'left',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'adr',
-          label: 'Decisions',
-          position: 'left',
-        },
         {
           href: 'https://github.com/fmmenchi/ai-skills',
           label: 'GitHub',

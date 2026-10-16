@@ -52,7 +52,7 @@ jobs:
       # Every link between README, the ADRs and the skills must resolve, or the
       # build fails. The same command as the definition of done in AGENTS.md.
       - name: Docs site builds
-        run: pnpm nx run docs:build
+        run: pnpm nx run @fmmenchi/ai-skills-docs:build
 
       - name: Branch name is semantic
         if: github.event_name == 'pull_request'

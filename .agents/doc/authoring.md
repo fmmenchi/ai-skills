@@ -30,7 +30,7 @@ Gerund reads best (`processing-pdfs`); a noun phrase (`pdf-processing`) is fine.
 `utils`, `tools`, `documents`, `data` — a name that could cover anything routes to nothing.
 
 **Person is two questions, not one — and only one of them has a settled answer.**
-[ADR 0003](../../doc/adr/0003-description-point-of-view-is-not-a-standard.md).
+[ADR 0003](../../apps/docusaurus/docs/adr/0003-description-point-of-view-is-not-a-standard.md).
 
 *In the body:* imperative or infinitive, **never second person**. `To do X, do Y`, not `You
 should do X`. Every source agrees, and the official skill-authoring skill puts it in its own
@@ -133,8 +133,9 @@ you cannot name them, the skill documents an imagined problem — and the admiss
 `architecture.md` has not actually been met. They live in `evals/<skill-name>/` at the
 repository root, one file each plus any fixture — **outside** the skill directory, which is
 symlinked whole into every tool — and each must be runnable by a stranger: a fixture, a query,
-an observable baseline, a pass criterion. Reviews of a skill go to `doc/reviews/` for the same
-reason. [ADR 0006](../../doc/adr/0006-evals-and-reviews-live-outside-the-skill.md).
+an observable baseline, a pass criterion. Reviews of a skill go to `apps/docusaurus/docs/reviews/`
+for the same reason (ADR 0006; the location is ADR 0008's).
+[ADR 0006](../../apps/docusaurus/docs/adr/0006-evals-and-reviews-live-outside-the-skill.md).
 
 Beside them, `promptfooconfig.yaml` is what **executes**: the scenarios are the evidence the
 skill was needed, the config is the suite. Start with **activation** — `skill-used` on the

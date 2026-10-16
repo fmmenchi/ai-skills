@@ -1,5 +1,5 @@
 {
-  "name": "docs",
+  "name": "@fmmenchi/ai-skills-docs",
   "version": "0.0.0",
   "private": true,
   "nx": {
@@ -48,7 +48,6 @@
         }
       },
       "build": {
-        "//": "The generator's inputs are {projectRoot} only, and this site serves files outside it: README.md, doc/adr/ and skills/ (docusaurus.config.ts, `include`). Measured: an ADR edit was served a cache hit and the stale site. Keep this list in step with that `include`.",
         "executor": "nx:run-commands",
         "dependsOn": [
           "sync-docs"
@@ -62,10 +61,7 @@
         ],
         "cache": true,
         "inputs": [
-          "{projectRoot}/**/*",
-          "{workspaceRoot}/README.md",
-          "{workspaceRoot}/doc/adr/*.md",
-          "{workspaceRoot}/skills/**/*"
+          "{projectRoot}/**/*"
         ]
       },
       "serve": {
