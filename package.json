@@ -14,8 +14,8 @@
     "evals:view": "promptfoo view"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.2",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@fmmenchi/nx-docusaurus": "0.0.20",
     "@nx/devkit": "24.0.6",
     "commitizen": "^4.3.2",
