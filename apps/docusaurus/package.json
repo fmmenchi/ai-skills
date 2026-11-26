@@ -86,8 +86,8 @@
     "@docusaurus/preset-classic": "^3.10.2",
     "@docusaurus/plugin-content-docs": "^3.10.2",
     "@docusaurus/types": "^3.10.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "@fmmenchi/nx-docusaurus": "0.0.20"
   }
 }
