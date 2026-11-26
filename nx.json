@@ -5,5 +5,8 @@
     "build": {
       "cache": true
     }
+  },
+  "affected": {
+    "legacy": true
   }
 }
